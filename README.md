@@ -1,1 +1,1 @@
-# eoap
+# Earth Observation Application Packages (EOAPs)

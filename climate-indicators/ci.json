@@ -1,0 +1,110 @@
+{
+    "processDescription": {
+      "processID": "ci",
+      "version": "1.0.5",
+      "title": "Climate Indicators Processor",
+      "description": "Calculates climate variables, indices, and anomalies to evaluate the impact of extreme climate events, supporting disaster risk management planning. Uses ERA5-Land variables (2m temperature and precipitation) for reanalysis at ~9 km resolution and ISIMIP CMIP6 climate models for projections at quarter-degree resolution. Output is delivered as GeoTIFF files.",
+      "keywords": [
+        "climate",
+        "indicators",
+        "extreme events",
+        "ERA5-Land",
+        "ISIMIP",
+        "CMIP6",
+        "temperature",
+        "precipitation",
+        "disaster risk"
+      ],
+      "metadata": [
+        {
+            "title": "Climate Indicators",
+            "href": "https://app-gda.esa.int/abb/climate-indicators"
+        }
+      ],
+      "inputs": {
+        "-b": {
+          "title": "Area of Interest",
+          "description": "Bounding box defining the area of interest",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "pattern": "^-?\\d+(\\.\\d+)?(,-?\\d+(\\.\\d+)?){3}$"
+          }
+        },
+        "-s": {
+          "title": "Start",
+          "description": "Initial sensing date of the analysis period (YYYY-MM-DD). Available range: 1950-01-01 to 2025-07-01. Must be on or before -e.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "-e": {
+          "title": "End",
+          "description": "Final sensing date of the analysis period (YYYY-MM-DD). Available range: 1950-01-01 to 2025-07-01. Must be on or after -s; maximum period is 12 months.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "-p": {
+          "title": "Indicator",
+          "description": "Climate variable to compute: CDD (Consecutive Dry Days), CWD (Consecutive Wet Days), HWN (Number of HeatWaves), HWF (Frequency of HeatWaves), R20mm (Rainy days with daily precipitation above 20mm), R95pTOT (Percentage of total precipitation due to heavy events), Rx5day (Maximum 5-day rainfall), SU (Summer Days), TR (Tropical Nights), Tx99p (Days with maximum temperature above the 99th percentile).",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "CDD",
+              "CWD",
+              "HWN",
+              "HWF",
+              "R20mm",
+              "R95pTOT",
+              "Rx5day",
+              "SU",
+              "TR",
+              "Tx99p"
+            ]
+          }
+        },
+        "-t": {
+          "title": "Time Aggregation",
+          "description": "Temporal aggregation of the results: M (Monthly), Q (Quarterly), Y (Yearly).",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "M",
+              "Q",
+              "Y"
+            ]
+          }
+        }
+      },
+      "outputs": {
+        "result": {
+          "title": "Climate Indicator results",
+          "description": "Files with the computed climate indicator over the area of interest.",
+          "schema": {}
+        }
+      },
+      "jobControlOptions": [
+        "async-execute"
+      ],
+      "outputTransmission": [
+        "reference"
+      ],
+      "owner": "MEEO"
+    },
+    "executionUnit": {
+      "type": "application/cwl+yaml",
+      "href": "https://git.services.meeo.it/njanpou/eoap/-/raw/377a4a45da671bc36ee7f8833c5e32e8b5168d47/flood-risk/flood-risk-fixed-value.cwl"
+    }
+  }
