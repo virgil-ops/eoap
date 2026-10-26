@@ -105,6 +105,6 @@
     },
     "executionUnit": {
       "type": "application/cwl+yaml",
-      "href": "https://git.services.meeo.it/njanpou/eoap/-/raw/377a4a45da671bc36ee7f8833c5e32e8b5168d47/flood-risk/flood-risk-fixed-value.cwl"
+      "href": "https://raw.githubusercontent.com/virgil-ops/eoap/refs/heads/main/climate-indicators/ci.cwl"
     }
   }

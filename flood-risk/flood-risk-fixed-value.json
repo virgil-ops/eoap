@@ -1,0 +1,142 @@
+{
+    "processDescription": {
+      "processID": "flood-risk-fixed-value",
+      "version": "0.0.1",
+      "title": "Flood Risk Fixed Value",
+      "description": "Estimates flood-related exposure metrics for a given polygon area under a specified SSP scenario, storm surge return period, and future year Powered by the IDEAS Adam Platform.",
+      "keywords": [
+        "flood",
+        "risk",
+        "exposure",
+        "climate",
+        "SSP",
+        "storm surge"
+      ],
+      "metadata": [
+        {
+          "title": "IDEAS Adam Platform",
+          "href": "https://api.ideas.adamplatform.eu"
+        },
+        {
+          "title": "ESA APEX Documentation",
+          "href": "https://esa-apex.github.io/apex_documentation/"
+        }
+      ],
+      "inputs": {
+        "confidence": {
+          "title": "Confidence",
+          "description": "Confidence level of the flood model.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          }
+        },
+        "bbox": {
+          "title": "Area of Interest",
+          "description": "Bounding box defining the area of interest.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string"
+          }
+        },
+        "ssp": {
+          "title": "SSP Scenario",
+          "description": "Shared Socioeconomic Pathway.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ssp126",
+              "ssp245",
+              "ssp370",
+              "ssp585"
+            ]
+          }
+        },
+        "storm_surge": {
+          "title": "Storm Surge Return Period",
+          "description": "Return period identifier, e.g. '5_0', '10_0', '100_0'.",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "0_0",
+              "0_5",
+              "1_0",
+              "1_5",
+              "2_0",
+              "3_0",
+              "5_0",
+              "all"
+            ]
+          }
+        },
+        "year": {
+          "title": "Year",
+          "description": "Target year for the flood projection (2020-2200).",
+          "minOccurs": 1,
+          "maxOccurs": 1,
+          "schema": {
+            "type": "string",
+            "enum": [
+              "2020",
+              "2040",
+              "2060",
+              "2080",
+              "2100",
+              "2120",
+              "2150",
+              "all"
+            ]
+          }
+        }
+      },
+      "outputs": {
+        "result": {
+          "title": "Flood Exposure Metrics",
+          "description": "Built surface (m2), population count, and agricultural exposure (cereals / rice in ha) within the area of interest.",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "GHS_BUILT_S_E2020_GLOBE": {
+                "type": "number",
+                "description": "Exposed built surface area in m2."
+              },
+              "GHS_POP_E2020_GLOBE": {
+                "type": "number",
+                "description": "Estimated exposed population."
+              },
+              "cereals": {
+                "type": "number",
+                "description": "Exposed cereal crop area in ha."
+              },
+              "cereals_rice": {
+                "type": "number",
+                "description": "Exposed rice crop area in ha."
+              }
+            }
+          }
+        }
+      },
+      "jobControlOptions": [
+        "async-execute"
+      ],
+      "outputTransmission": [
+        "value"
+      ],
+      "owner": "MEEO"
+    },
+    "executionUnit": {
+      "type": "application/cwl+yaml",
+      "href": "https://raw.githubusercontent.com/virgil-ops/eoap/refs/heads/main/flood-risk/flood-risk-fixed-value.cwl"
+    }
+  }
