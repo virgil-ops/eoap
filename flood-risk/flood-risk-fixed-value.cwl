@@ -18,10 +18,10 @@ $graph:
       type: string
       default: "0.6,0.7,0.7,40.8"
       label: Area of Interest
-      doc: GeoJSON Polygon bbox, serialized as a JSON string.
+      doc: Bounding box in min_lon,min_lat,max_lon,max_lat order.
     ssp:
       type: string
-      default: "ssp245"
+      default: ssp245
       label: SSP Scenario
       doc: Shared Socioeconomic Pathway.
     storm_surge:
@@ -31,16 +31,17 @@ $graph:
       doc: Return period identifier.
     year:
       type: string
-      label: Year
       default: "2100"
-      doc: Target year for the flood projection.
+      label: Projection Year
+      doc: Target year for the flood projection, or all supported years.
   outputs:
     result:
-      type: File
-      outputSource: node_flood/result
+      type: Directory
+      label: Flood risk STAC Catalog and assets
+      outputSource: node_flood/result_dir
   steps:
     node_flood:
-      run: '#flood-risk-cl'
+      run: "#flood-risk-cl"
       in:
         confidence: confidence
         bbox: bbox
@@ -48,7 +49,7 @@ $graph:
         storm_surge: storm_surge
         year: year
       out:
-      - result
+      - result_dir
 
 - class: CommandLineTool
   id: flood-risk-cl
@@ -63,7 +64,7 @@ $graph:
   baseCommand:
   - python
   - /app/flood-risk-fixed-value-processor.py
-  stdout: output.json
+  stdout: stdout.json
   inputs:
     confidence:
       type: string
@@ -86,5 +87,7 @@ $graph:
       inputBinding:
         prefix: --year
   outputs:
-    result:
-      type: stdout
+    result_dir:
+      type: Directory
+      outputBinding:
+        glob: .
