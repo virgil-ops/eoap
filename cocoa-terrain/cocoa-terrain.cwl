@@ -79,7 +79,8 @@ $graph:
     bbox:
       type: string
       inputBinding:
-        prefix: --bbox
+        prefix: --bbox=
+        separate: false
     outdir:
       type: string
       default: staged
@@ -112,7 +113,8 @@ $graph:
     bbox:
       type: string
       inputBinding:
-        prefix: --bbox
+        prefix: --bbox=
+        separate: false
     max_elev:
       type: float
       inputBinding:
@@ -158,7 +160,8 @@ $graph:
     bbox:
       type: string
       inputBinding:
-        prefix: --bbox
+        prefix: --bbox=
+        separate: false
     max_elev:
       type: float
       inputBinding:
