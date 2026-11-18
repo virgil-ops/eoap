@@ -1,0 +1,84 @@
+{
+  "processDescription": {
+    "processID": "cocoa-terrain",
+    "version": "1.0.0",
+    "title": "Cocoa Terrain Suitability",
+    "description": "Downloads Copernicus DEM GLO-30 tiles for an area of interest, evaluates terrain suitability using elevation and slope thresholds, and publishes a Cloud Optimized GeoTIFF with STAC metadata to S3.",
+    "keywords": [
+      "cocoa",
+      "terrain suitability",
+      "Copernicus DEM",
+      "elevation",
+      "slope",
+      "GeoTIFF",
+      "COG",
+      "STAC"
+    ],
+    "inputs": {
+      "bbox": {
+        "title": "Area of Interest",
+        "description": "Bounding box in west,south,east,north order (EPSG:4326).",
+        "minOccurs": 1,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d+)?(,-?\\d+(\\.\\d+)?){3}$"
+        }
+      },
+      "max_elev": {
+        "title": "Maximum elevation",
+        "description": "Maximum suitable elevation in metres.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "number",
+          "minimum": 0,
+          "default": 800
+        }
+      },
+      "max_slope": {
+        "title": "Maximum slope",
+        "description": "Maximum suitable slope in degrees.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "default": 15
+        }
+      },
+      "res": {
+        "title": "Output resolution",
+        "description": "Output pixel size in degrees.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.000833
+        }
+      }
+    },
+    "outputs": {
+      "catalog_uri": {
+        "title": "STAC Catalog URI",
+        "description": "S3 URI of the published STAC Catalog and its output assets.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "jobControlOptions": [
+      "async-execute"
+    ],
+    "outputTransmission": [
+      "value"
+    ],
+    "owner": "MEEO"
+  },
+  "executionUnit": {
+    "type": "application/cwl+yaml",
+    "href": "https://git.services.meeo.it/gda_app/gda_app_proj_repo/dph/-/raw/main/lib/processors/cocoa_terrain/cocoa-terrain.cwl"
+  }
+}
