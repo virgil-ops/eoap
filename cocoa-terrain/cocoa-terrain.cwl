@@ -141,6 +141,7 @@ $graph:
 - class: CommandLineTool
   id: stage-out
   requirements:
+    InlineJavascriptRequirement: {}
     DockerRequirement:
       dockerPull: docker.io/stormbreaker0/cocoa-terrain-stage-out:1.0.0
     NetworkAccess:
