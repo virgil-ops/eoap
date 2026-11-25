@@ -1,7 +1,7 @@
 cwlVersion: v1.2
 $namespaces:
   s: https://schema.org/
-s:softwareVersion: 1.0.0
+s:softwareVersion: 1.0.1
 
 $graph:
 - class: Workflow
@@ -10,7 +10,7 @@ $graph:
   doc: >
     Downloads Copernicus DEM GLO-30 tiles for an area of interest, computes
     cocoa terrain suitability from elevation and slope thresholds, and
-    publishes a COG with STAC metadata to S3 using three independent images.
+    creates a local COG with STAC metadata using three independent images.
   inputs:
     bbox:
       type: string
@@ -33,10 +33,10 @@ $graph:
       doc: Pixel size of the suitability raster in degrees.
   outputs:
     catalog_uri:
-      type: string
-      label: S3 URI of the final STAC Catalog
-      doc: S3 URI of the published STAC Catalog and its output assets.
-      outputSource: stage_out/catalog_uri
+      type: Directory
+      label: STAC Catalog URL
+      doc: Local STAC Catalog directory; DPH stages the catalog and its assets.
+      outputSource: stage_out/staged_dir
   steps:
     stage_in:
       run: "#stage-in"
@@ -60,7 +60,7 @@ $graph:
         max_elev: max_elev
         max_slope: max_slope
         res: res
-      out: [catalog_uri]
+      out: [staged_dir]
 
 - class: CommandLineTool
   id: stage-in
@@ -141,18 +141,16 @@ $graph:
 - class: CommandLineTool
   id: stage-out
   requirements:
-    InlineJavascriptRequirement: {}
     DockerRequirement:
       dockerPull: docker.io/stormbreaker0/cocoa-terrain-stage-out:1.0.0
     NetworkAccess:
-      networkAccess: true
+      networkAccess: false
     ResourceRequirement:
       ramMin: 512
       coresMin: 1
   baseCommand:
   - python
   - /app/stage_out.py
-  stdout: catalog-uri.txt
   inputs:
     results_dir:
       type: Directory
@@ -181,9 +179,7 @@ $graph:
       inputBinding:
         prefix: --outdir
   outputs:
-    catalog_uri:
-      type: string
+    staged_dir:
+      type: Directory
       outputBinding:
-        glob: catalog-uri.txt
-        loadContents: true
-        outputEval: $(self[0].contents.trim())
+        glob: stage-out
