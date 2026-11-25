@@ -10,7 +10,7 @@ $graph:
   doc: >
     Downloads Copernicus DEM GLO-30 tiles for an area of interest, computes
     cocoa terrain suitability from elevation and slope thresholds, and
-    creates a local COG with STAC metadata using three independent images.
+    creates a local COG and STAC Catalog using three independent images.
   inputs:
     bbox:
       type: string
@@ -36,7 +36,7 @@ $graph:
       type: Directory
       label: STAC Catalog URL
       doc: Local STAC Catalog directory; DPH stages the catalog and its assets.
-      outputSource: stage_out/staged_dir
+      outputSource: stage_out/catalog_dir
   steps:
     stage_in:
       run: "#stage-in"
@@ -55,12 +55,8 @@ $graph:
     stage_out:
       run: "#stage-out"
       in:
-        results_dir: process/results_dir
-        bbox: bbox
-        max_elev: max_elev
-        max_slope: max_slope
-        res: res
-      out: [staged_dir]
+        input_dir: process/results_dir
+      out: [catalog_dir]
 
 - class: CommandLineTool
   id: stage-in
@@ -142,44 +138,27 @@ $graph:
   id: stage-out
   requirements:
     DockerRequirement:
-      dockerPull: docker.io/stormbreaker0/cocoa-terrain-stage-out:1.0.0
+      dockerPull: docker.io/stormbreaker0/dph-stac-stage-out:1.0.0
     NetworkAccess:
       networkAccess: false
     ResourceRequirement:
-      ramMin: 512
+      ramMin: 256
       coresMin: 1
   baseCommand:
   - python
   - /app/stage_out.py
   inputs:
-    results_dir:
+    input_dir:
       type: Directory
       inputBinding:
-        prefix: --results-dir
-    bbox:
-      type: string
-      inputBinding:
-        prefix: --bbox=
-        separate: false
-    max_elev:
-      type: float
-      inputBinding:
-        prefix: --max-elev
-    max_slope:
-      type: float
-      inputBinding:
-        prefix: --max-slope
-    res:
-      type: float
-      inputBinding:
-        prefix: --res
-    outdir:
+        prefix: --input-dir
+    output_dir:
       type: string
       default: stage-out
       inputBinding:
-        prefix: --outdir
+        prefix: --output-dir
   outputs:
-    staged_dir:
+    catalog_dir:
       type: Directory
       outputBinding:
         glob: stage-out
