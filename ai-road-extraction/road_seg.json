@@ -28,10 +28,9 @@
         "schema": {
           "type": "string",
           "enum": [
-            "BaseLayer",
             "Sentinel2L2AImagery"
           ],
-          "default": "BaseLayer"
+          "default": "Sentinel2L2AImagery"
         }
       },
       "sensitivity": {

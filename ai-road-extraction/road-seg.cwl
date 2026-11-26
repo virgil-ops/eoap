@@ -18,8 +18,8 @@ $graph:
     source:
       type:
         type: enum
-        symbols: [BaseLayer, Sentinel2L2AImagery]
-      default: BaseLayer
+        symbols: [Sentinel2L2AImagery]
+      default: Sentinel2L2AImagery
       label: Image source
       doc: Use the basemap or Sentinel-2 L2A imagery.
     sensitivity:
@@ -84,8 +84,8 @@ $graph:
     source:
       type:
         type: enum
-        symbols: [BaseLayer, Sentinel2L2AImagery]
-      default: BaseLayer
+        symbols: [Sentinel2L2AImagery]
+      default: Sentinel2L2AImagery
       inputBinding:
         prefix: --source
     start_date:
