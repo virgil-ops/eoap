@@ -1,0 +1,90 @@
+{
+  "processDescription": {
+    "processID": "ai-road-extraction",
+    "version": "0.1.7",
+    "title": "AI Road Extraction",
+    "description": "Extracts georeferenced binary road masks from basemap or Sentinel-2 L2A imagery. DPH manages the STAC catalog, artifacts, and optional object-store upload.",
+    "keywords": [
+      "road extraction",
+      "road segmentation",
+      "Sentinel-2",
+      "Earth observation"
+    ],
+    "inputs": {
+      "bbox": {
+        "title": "Area of interest",
+        "description": "Bounding box in west,south,east,north order (EPSG:4326), at most 100 km2.",
+        "minOccurs": 1,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "source": {
+        "title": "Image source",
+        "description": "Choose basemap or Sentinel-2 L2A imagery.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "BaseLayer",
+            "Sentinel2L2AImagery"
+          ],
+          "default": "BaseLayer"
+        }
+      },
+      "sensitivity": {
+        "title": "Sensitivity",
+        "description": "Road-probability threshold between 0 and 1.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.1
+        }
+      },
+      "start_date": {
+        "title": "Start date",
+        "description": "Required for Sentinel-2, in YYYY-MM-DD format.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "end_date": {
+        "title": "End date",
+        "description": "Required for Sentinel-2, in YYYY-MM-DD format.",
+        "minOccurs": 0,
+        "maxOccurs": 1,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "outputs": {
+      "catalog_uri": {
+        "title": "Road extraction results",
+        "description": "DPH artifact URL for the STAC Catalog and its georeferenced road masks.",
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "jobControlOptions": [
+      "async-execute"
+    ],
+    "outputTransmission": [
+      "reference"
+    ],
+    "owner": "Earthpulse"
+  },
+  "executionUnit": {
+    "type": "application/cwl+yaml",
+    "href": "https://git.services.meeo.it/gda_app/gda_app_proj_repo/dph/-/raw/main/lib/processors/ai-road-extraction/road-seg.cwl"
+  }
+}
